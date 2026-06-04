@@ -22,21 +22,21 @@ export default function PageGallery({ onNavigate }: { onNavigate: (i: number) =>
     <div className="relative w-full h-full flex items-center overflow-y-auto page-scroll bg-[#050505]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/20 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-6 pt-24 pb-12 w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-10 w-full">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-7 sm:mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-xs font-bold uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
             Gallery
           </div>
-          <h2 className="text-5xl md:text-6xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
             Take a look at <span className="gradient-text">our work</span>
           </h2>
         </motion.div>
 
-        <div className="columns-2 lg:columns-3 gap-3 space-y-3">
+        <div className="columns-2 sm:columns-2 lg:columns-3 gap-2 sm:gap-3 space-y-2 sm:space-y-3">
           {images.map((img, i) => (
             <motion.div
               key={i}
@@ -61,8 +61,8 @@ export default function PageGallery({ onNavigate }: { onNavigate: (i: number) =>
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-8">
-          <button onClick={() => onNavigate(4)} className="btn-shine px-8 py-3 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-sm hover:bg-[#fbbf24] transition-all shadow-lg shadow-[#f5a623]/20">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-6 sm:mt-8">
+          <button onClick={() => onNavigate(4)} className="btn-shine px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-xs sm:text-sm hover:bg-[#fbbf24] transition-all shadow-lg shadow-[#f5a623]/20">
             Contact Us →
           </button>
         </motion.div>

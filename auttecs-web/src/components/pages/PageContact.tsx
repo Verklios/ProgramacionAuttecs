@@ -22,28 +22,28 @@ export default function PageContact({ currentPage, totalPages }: { onNavigate: (
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(245,166,35,0.05) 0%, transparent 70%)" }} />
 
-      <div className="max-w-6xl mx-auto px-6 pt-24 pb-12 w-full relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-10 w-full relative">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-7 sm:mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-xs font-bold uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
             Contact
           </div>
-          <h2 className="text-5xl md:text-6xl font-black text-white tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
             Ready to transform{" "}
             <span className="gradient-text">your industry?</span>
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 items-start">
           {/* Left */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="space-y-5"
+            className="space-y-4 sm:space-y-5"
           >
             <p className="text-slate-400 leading-relaxed">
               Schedule a meeting with our engineering team. We design integrated
@@ -95,7 +95,7 @@ export default function PageContact({ currentPage, totalPages }: { onNavigate: (
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="p-7 rounded-3xl border border-[#1e1e1e] bg-[#0d0d0d] glow-gold"
+            className="p-5 sm:p-7 rounded-3xl border border-[#1e1e1e] bg-[#0d0d0d] glow-gold"
           >
             {sent ? (
               <div className="text-center py-10 space-y-4">

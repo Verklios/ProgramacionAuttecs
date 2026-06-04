@@ -236,7 +236,7 @@ export default function FullPageController() {
       )}
 
       {/* ── Dot nav ── */}
-      <div className="fixed right-5 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
+      <div className="fixed right-3 sm:right-5 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2 sm:gap-3">
         {PAGES.map((p, i) => (
           <button
             key={p.id}
@@ -257,8 +257,8 @@ export default function FullPageController() {
       </div>
 
       {/* ── Page counter ── */}
-      <div className="fixed bottom-6 left-6 z-40 flex items-center gap-3 select-none">
-        <span className="text-3xl font-black text-[#f5a623] tabular-nums">
+      <div className="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 z-40 flex items-center gap-2 sm:gap-3 select-none">
+        <span className="text-2xl sm:text-3xl font-black text-[#f5a623] tabular-nums">
           {String(current + 1).padStart(2, "0")}
         </span>
         <div className="w-10 h-px bg-white/10 relative overflow-hidden">

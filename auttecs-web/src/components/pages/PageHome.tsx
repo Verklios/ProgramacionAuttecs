@@ -14,76 +14,76 @@ const itemVariants = {
 
 export default function PageHome({ onNavigate }: { onNavigate: (i: number) => void; currentPage: number; totalPages: number }) {
   return (
-    <div className="relative w-full h-full flex items-center dot-bg overflow-hidden">
+    <div className="relative w-full h-full flex items-center dot-bg overflow-y-auto page-scroll">
       {/* Radial glow */}
-      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 70%)" }} />
 
       {/* Decorative gear watermarks */}
-      <div className="absolute -top-20 -right-20 opacity-[0.04] gear-spin pointer-events-none">
+      <div className="absolute -top-20 -right-20 opacity-[0.04] gear-spin pointer-events-none hidden sm:block">
         <AuttecsLogo size={300} />
       </div>
-      <div className="absolute -bottom-24 -left-24 opacity-[0.04] gear-spin-reverse pointer-events-none">
+      <div className="absolute -bottom-24 -left-24 opacity-[0.04] gear-spin-reverse pointer-events-none hidden sm:block">
         <AuttecsLogo size={240} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 pt-20 grid lg:grid-cols-2 gap-12 items-center w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
         {/* Left */}
         <motion.div
           variants={containerVariants}
           initial="initial"
           animate="animate"
-          className="space-y-7"
+          className="space-y-5 sm:space-y-7"
         >
           <motion.div variants={itemVariants}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#f5a623]/25 bg-[#f5a623]/5 text-[#f5a623] text-xs font-bold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#f5a623]/25 bg-[#f5a623]/5 text-[#f5a623] text-[10px] sm:text-xs font-bold uppercase tracking-widest">
               <span className="w-1.5 h-1.5 rounded-full bg-[#f5a623] pulse-dot" />
               Automation & Technology Solutions
             </div>
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <h1 className="text-7xl md:text-8xl font-black text-white leading-[0.9] tracking-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white leading-[0.9] tracking-tight">
               INDUSTRY
             </h1>
-            <h1 className="text-7xl md:text-8xl font-black leading-[0.9] tracking-tight shimmer-text">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tight shimmer-text">
               5.0
             </h1>
           </motion.div>
 
-          <motion.p variants={itemVariants} className="text-slate-400 text-lg leading-relaxed max-w-lg">
+          <motion.p variants={itemVariants} className="text-slate-400 text-base sm:text-lg leading-relaxed max-w-lg">
             End-to-end integrated engineering projects — from concept to operation.
             Advanced automation, renewable energy & Industry 5.0 for{" "}
             <span className="text-[#f5a623]">mining</span> and{" "}
             <span className="text-[#f5a623]">heavy industry</span>.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-3 sm:gap-4">
             <button
               onClick={() => onNavigate(4)}
-              className="btn-shine group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-sm hover:bg-[#fbbf24] transition-all duration-300 shadow-xl shadow-[#f5a623]/25 hover:scale-105"
+              className="btn-shine group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-xs sm:text-sm hover:bg-[#fbbf24] transition-all duration-300 shadow-xl shadow-[#f5a623]/25 hover:scale-105"
             >
               Schedule Now
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </button>
             <button
               onClick={() => onNavigate(2)}
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full border border-[#333] text-slate-400 font-semibold hover:border-[#f5a623]/40 hover:text-white transition-all duration-300 text-sm uppercase tracking-widest"
+              className="group inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full border border-[#333] text-slate-400 font-semibold hover:border-[#f5a623]/40 hover:text-white transition-all duration-300 text-xs sm:text-sm uppercase tracking-widest"
             >
               Our Services
-              <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
             </button>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4 pt-4 border-t border-[#1a1a1a]">
+          <motion.div variants={itemVariants} className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-[#1a1a1a]">
             {[
               { num: "35%", label: "Cost Reduction" },
               { num: "99.8%", label: "Uptime SLA" },
-              { num: "2×", label: "Faster Deployment" },
+              { num: "2×", label: "Faster Deploy" },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <div className="text-2xl font-black gradient-text">{s.num}</div>
-                <div className="text-xs text-slate-600 mt-0.5">{s.label}</div>
+                <div className="text-xl sm:text-2xl font-black gradient-text">{s.num}</div>
+                <div className="text-[10px] sm:text-xs text-slate-600 mt-0.5">{s.label}</div>
               </div>
             ))}
           </motion.div>
@@ -94,12 +94,12 @@ export default function PageHome({ onNavigate }: { onNavigate: (i: number) => vo
           </motion.div>
         </motion.div>
 
-        {/* Right */}
+        {/* Right — shown on lg, compact on md */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" as const }}
-          className="hidden lg:flex justify-end"
+          className="hidden md:flex justify-center lg:justify-end"
         >
           <DashboardMockup />
         </motion.div>
