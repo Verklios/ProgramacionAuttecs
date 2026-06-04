@@ -18,12 +18,11 @@ const PAGES = [
   { id: "contact",  label: "Contact",   Component: PageContact },
 ];
 
-// ─── Transition variants ──────────────────────────────────────────────
-type TransitionType = "lift" | "logo" | "slide" | "curtain";
+type TransitionType = "logo";
 
-function getTransition(index: number): TransitionType {
-  const types: TransitionType[] = ["lift", "logo", "slide", "curtain", "lift"];
-  return types[index % types.length];
+// All transitions use the logo reveal — matches Auttecs brand identity
+function getTransition(_index: number): TransitionType {
+  return "logo";
 }
 
 // ─── Overlay transitions ──────────────────────────────────────────────
@@ -124,7 +123,7 @@ export default function FullPageController() {
   const [current, setCurrent] = useState(0);
   const [next, setNext] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
-  const [transitionType, setTransitionType] = useState<TransitionType>("lift");
+  const [transitionType, setTransitionType] = useState<TransitionType>("logo");
   const [direction, setDirection] = useState(1);
   const [navOpen, setNavOpen] = useState(false);
   const wheelLock = useRef(false);
@@ -139,11 +138,23 @@ export default function FullPageController() {
   }, [transitioning, current]);
 
   const handleWheel = useCallback((e: WheelEvent) => {
-    e.preventDefault();
     if (wheelLock.current || transitioning) return;
+
+    // Find the scrollable container the event came from
+    const target = e.target as HTMLElement;
+    const scrollable = target.closest(".overflow-y-auto, .overflow-y-scroll") as HTMLElement | null;
+
+    if (scrollable) {
+      const atBottom = scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight - 8;
+      const atTop    = scrollable.scrollTop <= 8;
+      // Let the element scroll naturally unless it's already at its limit
+      if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
+    }
+
+    // (passive listener — cannot preventDefault)
     wheelLock.current = true;
-    setTimeout(() => { wheelLock.current = false; }, 1200);
-    if (e.deltaY > 30) goTo(current + 1);
+    setTimeout(() => { wheelLock.current = false; }, 1300);
+    if (e.deltaY > 30)  goTo(current + 1);
     else if (e.deltaY < -30) goTo(current - 1);
   }, [current, goTo, transitioning]);
 
@@ -154,10 +165,18 @@ export default function FullPageController() {
   }, []);
   const handleTouchEnd = useCallback((e: TouchEvent) => {
     const delta = touchStartY.current - e.changedTouches[0].clientY;
-    if (Math.abs(delta) > 50) {
-      if (delta > 0) goTo(current + 1);
-      else goTo(current - 1);
+    if (Math.abs(delta) < 60) return;
+
+    const target = e.target as HTMLElement;
+    const scrollable = target.closest(".overflow-y-auto, .overflow-y-scroll") as HTMLElement | null;
+    if (scrollable) {
+      const atBottom = scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight - 8;
+      const atTop    = scrollable.scrollTop <= 8;
+      if ((delta > 0 && !atBottom) || (delta < 0 && !atTop)) return;
     }
+
+    if (delta > 0) goTo(current + 1);
+    else goTo(current - 1);
   }, [current, goTo]);
 
   // Keyboard
@@ -167,7 +186,7 @@ export default function FullPageController() {
   }, [current, goTo]);
 
   useEffect(() => {
-    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("wheel", handleWheel, { passive: true });
     window.addEventListener("touchstart", handleTouchStart, { passive: true });
     window.addEventListener("touchend", handleTouchEnd, { passive: true });
     window.addEventListener("keydown", handleKey);
@@ -194,13 +213,10 @@ export default function FullPageController() {
         <Component onNavigate={goTo} currentPage={current} totalPages={PAGES.length} />
       </div>
 
-      {/* Transition overlay */}
+      {/* Transition overlay — always logo style */}
       <AnimatePresence>
         {transitioning && (
-          transitionType === "lift"    ? <LiftTransition    key="lift"    onMid={handleTransitionMid} onDone={handleTransitionDone} /> :
-          transitionType === "logo"    ? <LogoTransition    key="logo"    onMid={handleTransitionMid} onDone={handleTransitionDone} /> :
-          transitionType === "slide"   ? <SlideTransition   key="slide"   onMid={handleTransitionMid} onDone={handleTransitionDone} direction={direction} /> :
-                                         <CurtainTransition key="curtain" onMid={handleTransitionMid} onDone={handleTransitionDone} />
+          <LogoTransition key="logo" onMid={handleTransitionMid} onDone={handleTransitionDone} />
         )}
       </AnimatePresence>
 
