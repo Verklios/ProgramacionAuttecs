@@ -69,9 +69,12 @@ export default function FullPageController() {
   const busy    = useRef(false);
   const wheelQ  = useRef(0);
 
+  const lastWheel = useRef(0);
+
   const goTo = useCallback((target: number) => {
     if (busy.current || target === current || target < 0 || target >= PAGES.length) return;
     busy.current = true;
+    lastWheel.current = Date.now();
 
     // Phase 1 — burst in (0 → peak)
     setOverlay(true);
@@ -104,18 +107,23 @@ export default function FullPageController() {
       const el = e.target as HTMLElement;
       const scrollable = el.closest(".page-scroll") as HTMLElement | null;
       if (scrollable) {
-        const atBottom = scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight - 4;
-        const atTop    = scrollable.scrollTop <= 4;
+        const atBottom = scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight - 8;
+        const atTop    = scrollable.scrollTop <= 8;
         if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) return;
       }
+
+      // Cooldown: ignore wheels fired within 800ms of last page change
+      const now = Date.now();
+      if (now - lastWheel.current < 800) return;
 
       wheelQ.current += e.deltaY;
       clearTimeout((onWheel as any)._t);
       (onWheel as any)._t = setTimeout(() => {
-        if (wheelQ.current > 40)       goTo(current + 1);
-        else if (wheelQ.current < -40) goTo(current - 1);
+        const q = wheelQ.current;
         wheelQ.current = 0;
-      }, 50);
+        if (q > 120) { lastWheel.current = Date.now(); goTo(current + 1); }
+        else if (q < -120) { lastWheel.current = Date.now(); goTo(current - 1); }
+      }, 80);
     };
     window.addEventListener("wheel", onWheel, { passive: true });
     return () => window.removeEventListener("wheel", onWheel);
