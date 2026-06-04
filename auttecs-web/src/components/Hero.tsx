@@ -1,6 +1,6 @@
 "use client";
 import { ArrowRight, MapPin, ChevronDown } from "lucide-react";
-import Image from "next/image";
+import AuttecsLogo from "./AuttecsLogo";
 import DashboardMockup from "./DashboardMockup";
 
 export default function Hero() {
@@ -13,10 +13,10 @@ export default function Hero() {
           style={{ background: "radial-gradient(circle, rgba(245,166,35,0.06) 0%, transparent 70%)" }} />
         {/* Decorative logo watermarks */}
         <div className="absolute -top-16 -right-16 opacity-5 gear-spin pointer-events-none">
-          <Image src="/logo.png" alt="" width={280} height={280} className="object-contain" />
+          <AuttecsLogo size={280} />
         </div>
         <div className="absolute -bottom-20 -left-20 opacity-5 gear-spin-reverse pointer-events-none">
-          <Image src="/logo.png" alt="" width={220} height={220} className="object-contain" />
+          <AuttecsLogo size={220} />
         </div>
         {/* Horizontal lines */}
         <div className="absolute top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/10 to-transparent" />

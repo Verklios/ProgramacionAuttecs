@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import Image from "next/image";
+import AuttecsLogo from "./AuttecsLogo";
 
 function FacebookIcon({ size = 18 }: { size?: number }) {
   return (
@@ -66,13 +66,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <a href="#home" className="flex items-center gap-3 group">
-          <Image
-            src="/logo.png"
-            alt="AUTTECS Logo"
-            width={44}
-            height={44}
-            className="object-contain drop-shadow-lg group-hover:scale-110 transition-transform duration-300"
-          />
+          <div className="group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
+            <AuttecsLogo size={44} />
+          </div>
           <div className="leading-tight">
             <div className="text-white font-black text-xl tracking-[0.2em] group-hover:text-[#f5a623] transition-colors duration-300">
               AUTTECS

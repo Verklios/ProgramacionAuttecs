@@ -1,4 +1,4 @@
-import Image from "next/image";
+import AuttecsLogo from "./AuttecsLogo";
 
 function FacebookIcon() {
   return (
@@ -28,13 +28,9 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <a href="#home" className="flex items-center gap-3 mb-5 group">
-              <Image
-                src="/logo.png"
-                alt="AUTTECS Logo"
-                width={44}
-                height={44}
-                className="object-contain group-hover:scale-110 transition-transform duration-300"
-              />
+              <div className="group-hover:scale-110 transition-transform duration-300">
+                <AuttecsLogo size={44} />
+              </div>
               <div>
                 <div className="text-white font-black text-xl tracking-[0.2em] group-hover:text-[#f5a623] transition-colors">AUTTECS</div>
                 <div className="text-[#f5a623]/40 text-[8px] tracking-[0.3em] font-semibold uppercase">Automation & Technology Solutions</div>
