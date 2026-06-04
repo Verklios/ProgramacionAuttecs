@@ -27,7 +27,8 @@ function getTransition(index: number): TransitionType {
 }
 
 // ─── Overlay transitions ──────────────────────────────────────────────
-function LiftTransition({ onDone }: { onDone: () => void }) {
+function LiftTransition({ onMid, onDone }: { onMid: () => void; onDone: () => void }) {
+  useEffect(() => { const t = setTimeout(onMid, 400); return () => clearTimeout(t); }, [onMid]);
   return (
     <motion.div
       className="fixed inset-0 z-50 bg-[#080808] origin-bottom"
@@ -40,15 +41,15 @@ function LiftTransition({ onDone }: { onDone: () => void }) {
   );
 }
 
-function LogoTransition({ onDone }: { onDone: () => void }) {
+function LogoTransition({ onMid, onDone }: { onMid: () => void; onDone: () => void }) {
   const [phase, setPhase] = useState<"in" | "hold" | "out">("in");
 
   useEffect(() => {
     const t1 = setTimeout(() => setPhase("hold"), 500);
-    const t2 = setTimeout(() => setPhase("out"), 950);
+    const t2 = setTimeout(() => { setPhase("out"); onMid(); }, 950);
     const t3 = setTimeout(onDone, 1400);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [onDone]);
+  }, [onMid, onDone]);
 
   return (
     <motion.div
@@ -82,7 +83,8 @@ function LogoTransition({ onDone }: { onDone: () => void }) {
   );
 }
 
-function SlideTransition({ onDone, direction }: { onDone: () => void; direction: number }) {
+function SlideTransition({ onMid, onDone, direction }: { onMid: () => void; onDone: () => void; direction: number }) {
+  useEffect(() => { const t = setTimeout(onMid, 300); return () => clearTimeout(t); }, [onMid]);
   return (
     <motion.div
       className="fixed inset-0 z-50 bg-[#f5a623]"
@@ -90,12 +92,12 @@ function SlideTransition({ onDone, direction }: { onDone: () => void; direction:
       animate={{ x: ["100%", "0%", "0%", direction > 0 ? "-100%" : "100%"] }}
       transition={{ duration: 1.0, times: [0, 0.3, 0.7, 1], ease: "easeInOut" }}
       onAnimationComplete={onDone}
-      style={{ originX: direction > 0 ? 1 : 0 }}
     />
   );
 }
 
-function CurtainTransition({ onDone }: { onDone: () => void }) {
+function CurtainTransition({ onMid, onDone }: { onMid: () => void; onDone: () => void }) {
+  useEffect(() => { const t = setTimeout(onMid, 450); return () => clearTimeout(t); }, [onMid]);
   return (
     <>
       <motion.div
@@ -120,6 +122,7 @@ function CurtainTransition({ onDone }: { onDone: () => void }) {
 // ─── Main Controller ──────────────────────────────────────────────────
 export default function FullPageController() {
   const [current, setCurrent] = useState(0);
+  const [next, setNext] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [transitionType, setTransitionType] = useState<TransitionType>("lift");
   const [direction, setDirection] = useState(1);
@@ -131,8 +134,8 @@ export default function FullPageController() {
     const dir = index > current ? 1 : -1;
     setDirection(dir);
     setTransitionType(getTransition(Math.min(current, index)));
+    setNext(index);
     setTransitioning(true);
-    setCurrent(index);
   }, [transitioning, current]);
 
   const handleWheel = useCallback((e: WheelEvent) => {
@@ -177,30 +180,27 @@ export default function FullPageController() {
   }, [handleWheel, handleTouchStart, handleTouchEnd, handleKey]);
 
   const { Component } = PAGES[current];
+  const handleTransitionMid = useCallback(() => {
+    setCurrent(next);
+  }, [next]);
+  const handleTransitionDone = useCallback(() => {
+    setTransitioning(false);
+  }, []);
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-[#080808]">
-      {/* Page content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          className="absolute inset-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Component onNavigate={goTo} currentPage={current} totalPages={PAGES.length} />
-        </motion.div>
-      </AnimatePresence>
+      {/* Page content — rendered directly, overlay handles transitions */}
+      <div className="absolute inset-0">
+        <Component onNavigate={goTo} currentPage={current} totalPages={PAGES.length} />
+      </div>
 
       {/* Transition overlay */}
       <AnimatePresence>
         {transitioning && (
-          transitionType === "lift"    ? <LiftTransition    key="lift"    onDone={() => setTransitioning(false)} /> :
-          transitionType === "logo"    ? <LogoTransition    key="logo"    onDone={() => setTransitioning(false)} /> :
-          transitionType === "slide"   ? <SlideTransition   key="slide"   onDone={() => setTransitioning(false)} direction={direction} /> :
-                                         <CurtainTransition key="curtain" onDone={() => setTransitioning(false)} />
+          transitionType === "lift"    ? <LiftTransition    key="lift"    onMid={handleTransitionMid} onDone={handleTransitionDone} /> :
+          transitionType === "logo"    ? <LogoTransition    key="logo"    onMid={handleTransitionMid} onDone={handleTransitionDone} /> :
+          transitionType === "slide"   ? <SlideTransition   key="slide"   onMid={handleTransitionMid} onDone={handleTransitionDone} direction={direction} /> :
+                                         <CurtainTransition key="curtain" onMid={handleTransitionMid} onDone={handleTransitionDone} />
         )}
       </AnimatePresence>
 
