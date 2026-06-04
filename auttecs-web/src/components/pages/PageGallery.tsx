@@ -19,7 +19,7 @@ export default function PageGallery({ onNavigate }: { onNavigate: (i: number) =>
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="relative w-full h-full flex items-center overflow-y-auto bg-[#050505]">
+    <div className="relative w-full h-full flex items-center overflow-y-auto page-scroll bg-[#050505]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/20 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-6 pt-24 pb-12 w-full">

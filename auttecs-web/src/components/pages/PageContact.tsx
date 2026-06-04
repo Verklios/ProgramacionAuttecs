@@ -16,7 +16,7 @@ export default function PageContact({ currentPage, totalPages }: { onNavigate: (
   void currentPage; void totalPages;
 
   return (
-    <div className="relative w-full h-full flex items-center overflow-y-auto bg-[#080808]">
+    <div className="relative w-full h-full flex items-center overflow-y-auto page-scroll bg-[#080808]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/20 to-transparent" />
       <div className="absolute inset-0 dot-bg" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"

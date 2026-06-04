@@ -12,7 +12,7 @@ const values = [
 
 export default function PageAbout({ onNavigate }: { onNavigate: (i: number) => void; currentPage: number; totalPages: number }) {
   return (
-    <div className="relative w-full h-full flex items-center overflow-y-auto bg-[#050505]">
+    <div className="relative w-full h-full flex items-center overflow-y-auto page-scroll bg-[#050505]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/30 to-transparent" />
       <div className="absolute inset-0 grid-bg" />
 
