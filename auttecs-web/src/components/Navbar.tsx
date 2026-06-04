@@ -9,12 +9,39 @@ function FacebookIcon({ size = 18 }: { size?: number }) {
     </svg>
   );
 }
-
 function LinkedinIcon({ size = 18 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
       <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
       <circle cx="4" cy="4" r="2" />
+    </svg>
+  );
+}
+
+/* Gear SVG matching Auttecs logo style */
+function GearLogo({ size = 40 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" className="gear-spin">
+      <circle cx="50" cy="50" r="18" fill="#f5a623" />
+      <circle cx="50" cy="50" r="10" fill="#080808" />
+      {Array.from({ length: 8 }).map((_, i) => {
+        const angle = (i * 360) / 8;
+        const rad = (angle * Math.PI) / 180;
+        const x = 50 + 28 * Math.cos(rad);
+        const y = 50 + 28 * Math.sin(rad);
+        return (
+          <rect
+            key={i}
+            x={x - 5}
+            y={y - 5}
+            width={10}
+            height={10}
+            rx={2}
+            fill="#f5a623"
+            transform={`rotate(${angle}, ${x}, ${y})`}
+          />
+        );
+      })}
     </svg>
   );
 }
@@ -30,92 +57,115 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("home");
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", fn);
-    return () => window.removeEventListener("scroll", fn);
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { threshold: 0.4 }
+    );
+    links.forEach(({ href }) => {
+      const el = document.querySelector(href);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-[#030b14]/90 backdrop-blur-xl border-b border-[#1a2d4a]"
+          ? "bg-[#080808]/95 backdrop-blur-2xl border-b border-[#222]"
           : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <a href="#home" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-full border-2 border-[#00d4b4]/40 bg-gradient-to-br from-[#00d4b4]/20 to-[#0891b2]/20 flex items-center justify-center">
-            <span className="text-[#00d4b4] font-bold text-sm">A</span>
-          </div>
-          <div>
-            <div className="text-white font-bold text-lg tracking-widest leading-none">AUTTECS</div>
-            <div className="text-[#00d4b4]/60 text-[9px] tracking-widest font-medium uppercase">
+          <GearLogo size={38} />
+          <div className="leading-tight">
+            <div className="text-white font-black text-xl tracking-[0.2em] group-hover:text-[#f5a623] transition-colors duration-300">
+              AUTTECS
+            </div>
+            <div className="text-[#f5a623]/50 text-[8px] tracking-[0.3em] font-semibold uppercase">
               Automation & Technology Solutions
             </div>
           </div>
         </a>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="text-sm text-slate-400 hover:text-white transition-colors duration-200 tracking-wide uppercase text-xs font-medium"
-            >
-              {l.label}
-            </a>
-          ))}
+        <div className="hidden md:flex items-center gap-1">
+          {links.map((l) => {
+            const isActive = active === l.href.slice(1);
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                className={`relative px-4 py-2 text-xs font-semibold uppercase tracking-widest transition-all duration-300 ${
+                  isActive ? "text-[#f5a623]" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                {l.label}
+                {isActive && (
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#f5a623]" />
+                )}
+              </a>
+            );
+          })}
         </div>
 
         {/* Social + CTA */}
-        <div className="hidden md:flex items-center gap-4">
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-[#00d4b4] transition-colors">
-            <FacebookIcon size={18} />
+        <div className="hidden md:flex items-center gap-3">
+          <a href="https://facebook.com" target="_blank" rel="noreferrer"
+            className="w-8 h-8 rounded-lg border border-[#222] flex items-center justify-center text-slate-500 hover:text-[#f5a623] hover:border-[#f5a623]/40 transition-all duration-300">
+            <FacebookIcon size={15} />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-[#00d4b4] transition-colors">
-            <LinkedinIcon size={18} />
+          <a href="https://linkedin.com" target="_blank" rel="noreferrer"
+            className="w-8 h-8 rounded-lg border border-[#222] flex items-center justify-center text-slate-500 hover:text-[#f5a623] hover:border-[#f5a623]/40 transition-all duration-300">
+            <LinkedinIcon size={15} />
           </a>
           <a
             href="#contact"
-            className="px-5 py-2.5 rounded-full bg-[#00d4b4] text-[#030b14] text-sm font-semibold hover:bg-[#00b89c] transition-colors duration-200 shadow-lg shadow-[#00d4b4]/20 ml-2"
+            className="btn-shine ml-2 px-5 py-2.5 rounded-full bg-[#f5a623] text-black text-xs font-bold uppercase tracking-widest hover:bg-[#fbbf24] transition-all duration-300 shadow-lg shadow-[#f5a623]/20"
           >
             Schedule Now
           </a>
         </div>
 
-        {/* Mobile toggle */}
-        <button className="md:hidden text-slate-400 hover:text-white" onClick={() => setOpen(!open)}>
+        <button className="md:hidden text-slate-400 hover:text-[#f5a623] transition-colors" onClick={() => setOpen(!open)}>
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden bg-[#030b14]/95 backdrop-blur-xl border-b border-[#1a2d4a] px-6 pb-6 flex flex-col gap-4">
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ${
+          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        } bg-[#080808]/98 backdrop-blur-2xl border-b border-[#222]`}
+      >
+        <div className="px-6 py-4 flex flex-col gap-1">
           {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setOpen(false)}
-              className="text-slate-400 hover:text-white text-sm py-2 border-b border-[#1a2d4a] uppercase tracking-wider"
-            >
+            <a key={l.href} href={l.href} onClick={() => setOpen(false)}
+              className="text-slate-400 hover:text-[#f5a623] text-xs py-3 border-b border-[#1a1a1a] uppercase tracking-widest font-semibold transition-colors">
               {l.label}
             </a>
           ))}
-          <a
-            href="#contact"
-            onClick={() => setOpen(false)}
-            className="mt-2 px-5 py-3 rounded-full bg-[#00d4b4] text-[#030b14] text-sm font-semibold text-center tracking-wide"
-          >
+          <a href="#contact" onClick={() => setOpen(false)}
+            className="mt-4 px-5 py-3 rounded-full bg-[#f5a623] text-black text-xs font-bold text-center uppercase tracking-widest">
             Schedule Now
           </a>
         </div>
-      )}
+      </div>
     </nav>
   );
 }

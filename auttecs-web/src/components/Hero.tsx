@@ -1,68 +1,130 @@
 "use client";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin, ChevronDown } from "lucide-react";
 import DashboardMockup from "./DashboardMockup";
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-screen flex items-center grid-bg overflow-hidden pt-20">
-      {/* Radial glows */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00d4b4]/6 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#f59e0b]/4 rounded-full blur-3xl" />
+    <section id="home" className="relative min-h-screen flex flex-col items-center justify-center dot-bg overflow-hidden pt-20">
+      {/* Background elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Large radial glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(245,166,35,0.06) 0%, transparent 70%)" }} />
+        {/* Decorative gears */}
+        <svg className="absolute -top-16 -right-16 opacity-5 gear-spin" width="300" height="300" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="20" fill="#f5a623" />
+          <circle cx="50" cy="50" r="12" fill="#080808" />
+          {Array.from({ length: 10 }).map((_, i) => {
+            const a = (i * 360) / 10;
+            const r = (a * Math.PI) / 180;
+            const x = 50 + 30 * Math.cos(r);
+            const y = 50 + 30 * Math.sin(r);
+            return <rect key={i} x={x - 5} y={y - 6} width={10} height={12} rx={2} fill="#f5a623" transform={`rotate(${a}, ${x}, ${y})`} />;
+          })}
+        </svg>
+        <svg className="absolute -bottom-20 -left-20 opacity-5 gear-spin-reverse" width="250" height="250" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="20" fill="#f5a623" />
+          <circle cx="50" cy="50" r="12" fill="#080808" />
+          {Array.from({ length: 8 }).map((_, i) => {
+            const a = (i * 360) / 8;
+            const r = (a * Math.PI) / 180;
+            const x = 50 + 30 * Math.cos(r);
+            const y = 50 + 30 * Math.sin(r);
+            return <rect key={i} x={x - 5} y={y - 6} width={10} height={12} rx={2} fill="#f5a623" transform={`rotate(${a}, ${x}, ${y})`} />;
+          })}
+        </svg>
+        {/* Horizontal lines */}
+        <div className="absolute top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/10 to-transparent" />
+        <div className="absolute bottom-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/8 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-16 items-center w-full">
         {/* Left */}
         <div className="space-y-8">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#00d4b4]/30 bg-[#00d4b4]/5 text-[#00d4b4] text-sm font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00d4b4] pulse-dot" />
+          {/* Badge */}
+          <div className="animate-slide-left inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#f5a623]/30 bg-[#f5a623]/5 text-[#f5a623] text-xs font-semibold uppercase tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#f5a623] pulse-dot" />
             Automation & Technology Solutions
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold text-white leading-[1.1] tracking-tight">
-            Industry{" "}
-            <span className="gradient-text text-glow">5.0</span>
-          </h1>
+          {/* Headline */}
+          <div className="animate-slide-left delay-100">
+            <h1 className="text-6xl md:text-7xl font-black text-white leading-[0.95] tracking-tight">
+              INDUSTRY
+            </h1>
+            <h1 className="text-6xl md:text-7xl font-black leading-[0.95] tracking-tight shimmer-text">
+              5.0
+            </h1>
+          </div>
 
-          <p className="text-slate-300 text-lg leading-relaxed max-w-xl">
-            We deliver end-to-end integrated engineering projects, covering all phases
-            from concept development through operation, by integrating advanced
-            automation, renewable energy systems, and Industry 5.0 technologies.
-          </p>
-          <p className="text-slate-400 text-base leading-relaxed max-w-xl">
-            Our goal is to optimize asset performance, reduce operating costs, and drive
-            decarbonization, particularly in sectors such as{" "}
-            <span className="text-[#00d4b4] font-medium">mining</span> and{" "}
-            <span className="text-[#00d4b4] font-medium">heavy industry</span>.
-          </p>
+          {/* Description */}
+          <div className="animate-slide-left delay-200 space-y-3">
+            <p className="text-slate-300 text-lg leading-relaxed max-w-xl">
+              We deliver <span className="text-[#f5a623] font-semibold">end-to-end integrated engineering projects</span>,
+              covering all phases from concept development through operation.
+            </p>
+            <p className="text-slate-500 text-base leading-relaxed max-w-xl">
+              Integrating advanced automation, renewable energy systems, and Industry 5.0 technologies
+              to optimize asset performance in{" "}
+              <span className="text-[#f5a623]">mining</span> and{" "}
+              <span className="text-[#f5a623]">heavy industry</span>.
+            </p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          {/* CTA */}
+          <div className="animate-slide-left delay-300 flex flex-col sm:flex-row gap-4">
             <a
               href="#contact"
-              className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full bg-[#00d4b4] text-[#030b14] font-semibold hover:bg-[#00b89c] transition-all duration-200 shadow-lg shadow-[#00d4b4]/25 hover:shadow-[#00d4b4]/40 hover:scale-105 tracking-wide"
+              className="btn-shine group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-sm hover:bg-[#fbbf24] transition-all duration-300 shadow-xl shadow-[#f5a623]/25 hover:shadow-[#f5a623]/40 hover:scale-105"
             >
               Schedule Now
-              <ArrowRight size={18} />
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
             <a
               href="#services"
-              className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-[#1a2d4a] text-slate-300 font-semibold hover:border-[#00d4b4]/40 hover:text-white transition-all duration-200 tracking-wide"
+              className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-[#333] text-slate-400 font-semibold hover:border-[#f5a623]/50 hover:text-white transition-all duration-300 text-sm uppercase tracking-widest"
             >
               Our Services
+              <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
             </a>
           </div>
 
-          <div className="flex items-center gap-2 text-slate-500 text-sm">
-            <MapPin size={14} className="text-[#00d4b4]" />
-            <span>México & USA</span>
+          {/* Meta */}
+          <div className="animate-slide-left delay-400 flex items-center gap-4 text-sm text-slate-600">
+            <div className="flex items-center gap-1.5">
+              <MapPin size={13} className="text-[#f5a623]" />
+              México & USA
+            </div>
+            <span className="w-1 h-1 rounded-full bg-[#333]" />
+            <span className="text-[#f5a623]/60">Industry 5.0 Partner</span>
+          </div>
+
+          {/* Stats row */}
+          <div className="animate-slide-left delay-500 grid grid-cols-3 gap-4 pt-4 border-t border-[#1a1a1a]">
+            {[
+              { num: "35%", label: "Cost Reduction" },
+              { num: "99.8%", label: "Uptime SLA" },
+              { num: "2x", label: "Faster Deployment" },
+            ].map((s) => (
+              <div key={s.label} className="text-center">
+                <div className="text-2xl font-black gradient-text">{s.num}</div>
+                <div className="text-xs text-slate-600 mt-0.5">{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Right – Dashboard */}
-        <div className="flex justify-center lg:justify-end">
+        {/* Right */}
+        <div className="animate-slide-right delay-200 flex justify-center lg:justify-end">
           <DashboardMockup />
         </div>
       </div>
+
+      {/* Scroll indicator */}
+      <a href="#about" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600 hover:text-[#f5a623] transition-colors group">
+        <span className="text-xs uppercase tracking-widest font-medium">Scroll</span>
+        <ChevronDown size={18} className="animate-bounce" />
+      </a>
     </section>
   );
 }
