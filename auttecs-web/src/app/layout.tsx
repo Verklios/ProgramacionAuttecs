@@ -6,15 +6,18 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Auttecs – Automatización e Inteligencia Artificial Empresarial",
+  title: "AUTTECS – Automation & Technology Solutions | Industry 5.0",
   description:
-    "Diseñamos e implementamos automatización, software e IA aplicada para que tu empresa opere con menos errores, más trazabilidad y decisiones más rápidas.",
-  keywords: ["automatización", "inteligencia artificial", "IA empresarial", "software", "integración"],
+    "We deliver end-to-end integrated engineering projects integrating advanced automation, renewable energy systems, and Industry 5.0 technologies. México & USA.",
+  keywords: [
+    "automation", "technology solutions", "industry 5.0", "mining", "HVAC",
+    "IoT", "robotics", "energy solutions", "México", "USA",
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );

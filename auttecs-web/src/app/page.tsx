@@ -1,9 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import About from "@/components/About";
 import Services from "@/components/Services";
-import Process from "@/components/Process";
-import UseCases from "@/components/UseCases";
-import Demos from "@/components/Demos";
+import Gallery from "@/components/Gallery";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -12,10 +11,9 @@ export default function Home() {
     <main className="min-h-screen bg-[#030b14] text-white">
       <Navbar />
       <Hero />
+      <About />
       <Services />
-      <Process />
-      <UseCases />
-      <Demos />
+      <Gallery />
       <Contact />
       <Footer />
     </main>
