@@ -1,5 +1,6 @@
 "use client";
 import { ArrowRight, MapPin, ChevronDown } from "lucide-react";
+import Image from "next/image";
 import DashboardMockup from "./DashboardMockup";
 
 export default function Hero() {
@@ -10,29 +11,13 @@ export default function Hero() {
         {/* Large radial glow */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
           style={{ background: "radial-gradient(circle, rgba(245,166,35,0.06) 0%, transparent 70%)" }} />
-        {/* Decorative gears */}
-        <svg className="absolute -top-16 -right-16 opacity-5 gear-spin" width="300" height="300" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="20" fill="#f5a623" />
-          <circle cx="50" cy="50" r="12" fill="#080808" />
-          {Array.from({ length: 10 }).map((_, i) => {
-            const a = (i * 360) / 10;
-            const r = (a * Math.PI) / 180;
-            const x = 50 + 30 * Math.cos(r);
-            const y = 50 + 30 * Math.sin(r);
-            return <rect key={i} x={x - 5} y={y - 6} width={10} height={12} rx={2} fill="#f5a623" transform={`rotate(${a}, ${x}, ${y})`} />;
-          })}
-        </svg>
-        <svg className="absolute -bottom-20 -left-20 opacity-5 gear-spin-reverse" width="250" height="250" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="20" fill="#f5a623" />
-          <circle cx="50" cy="50" r="12" fill="#080808" />
-          {Array.from({ length: 8 }).map((_, i) => {
-            const a = (i * 360) / 8;
-            const r = (a * Math.PI) / 180;
-            const x = 50 + 30 * Math.cos(r);
-            const y = 50 + 30 * Math.sin(r);
-            return <rect key={i} x={x - 5} y={y - 6} width={10} height={12} rx={2} fill="#f5a623" transform={`rotate(${a}, ${x}, ${y})`} />;
-          })}
-        </svg>
+        {/* Decorative logo watermarks */}
+        <div className="absolute -top-16 -right-16 opacity-5 gear-spin pointer-events-none">
+          <Image src="/logo.png" alt="" width={280} height={280} className="object-contain" />
+        </div>
+        <div className="absolute -bottom-20 -left-20 opacity-5 gear-spin-reverse pointer-events-none">
+          <Image src="/logo.png" alt="" width={220} height={220} className="object-contain" />
+        </div>
         {/* Horizontal lines */}
         <div className="absolute top-1/4 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/10 to-transparent" />
         <div className="absolute bottom-1/3 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/8 to-transparent" />

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 function FacebookIcon({ size = 18 }: { size?: number }) {
   return (
@@ -18,33 +19,6 @@ function LinkedinIcon({ size = 18 }: { size?: number }) {
   );
 }
 
-/* Gear SVG matching Auttecs logo style */
-function GearLogo({ size = 40 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 100 100" className="gear-spin">
-      <circle cx="50" cy="50" r="18" fill="#f5a623" />
-      <circle cx="50" cy="50" r="10" fill="#080808" />
-      {Array.from({ length: 8 }).map((_, i) => {
-        const angle = (i * 360) / 8;
-        const rad = (angle * Math.PI) / 180;
-        const x = 50 + 28 * Math.cos(rad);
-        const y = 50 + 28 * Math.sin(rad);
-        return (
-          <rect
-            key={i}
-            x={x - 5}
-            y={y - 5}
-            width={10}
-            height={10}
-            rx={2}
-            fill="#f5a623"
-            transform={`rotate(${angle}, ${x}, ${y})`}
-          />
-        );
-      })}
-    </svg>
-  );
-}
 
 const links = [
   { label: "Home", href: "#home" },
@@ -92,7 +66,13 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <a href="#home" className="flex items-center gap-3 group">
-          <GearLogo size={38} />
+          <Image
+            src="/logo.png"
+            alt="AUTTECS Logo"
+            width={44}
+            height={44}
+            className="object-contain drop-shadow-lg group-hover:scale-110 transition-transform duration-300"
+          />
           <div className="leading-tight">
             <div className="text-white font-black text-xl tracking-[0.2em] group-hover:text-[#f5a623] transition-colors duration-300">
               AUTTECS

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 function FacebookIcon() {
   return (
     <svg width={15} height={15} viewBox="0 0 24 24" fill="currentColor">
@@ -26,9 +28,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <a href="#home" className="flex items-center gap-3 mb-5 group">
-              <div className="w-10 h-10 rounded-full border-2 border-[#f5a623]/40 bg-[#f5a623]/10 flex items-center justify-center">
-                <span className="text-[#f5a623] font-black text-sm">A</span>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="AUTTECS Logo"
+                width={44}
+                height={44}
+                className="object-contain group-hover:scale-110 transition-transform duration-300"
+              />
               <div>
                 <div className="text-white font-black text-xl tracking-[0.2em] group-hover:text-[#f5a623] transition-colors">AUTTECS</div>
                 <div className="text-[#f5a623]/40 text-[8px] tracking-[0.3em] font-semibold uppercase">Automation & Technology Solutions</div>
