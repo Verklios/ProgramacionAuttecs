@@ -16,6 +16,33 @@ const images = [
   { src: "/gallery/foto-10.jpeg", alt: "Auttecs project 10" },
 ];
 
+function GalleryCell({ img, i, onSelect, className }: {
+  img: typeof images[0]; i: number;
+  onSelect: (i: number) => void; className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.92 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: i * 0.06, duration: 0.5 }}
+      className={`relative rounded-xl overflow-hidden border border-[#1a1a1a] cursor-pointer group ${className ?? ""}`}
+      onClick={() => onSelect(i)}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={img.src} alt={img.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2 sm:p-3">
+        <div className="flex items-center justify-between w-full">
+          <span className="text-white text-[10px] sm:text-xs font-semibold leading-tight">{img.alt}</span>
+          <div className="w-6 h-6 rounded-full bg-[#f5a623] flex items-center justify-center flex-shrink-0">
+            <ZoomIn size={10} className="text-black" />
+          </div>
+        </div>
+      </div>
+      <div className="absolute inset-0 rounded-xl border-2 border-[#f5a623]/0 group-hover:border-[#f5a623]/40 transition-all duration-300 pointer-events-none" />
+    </motion.div>
+  );
+}
+
 export default function PageGallery({ onNavigate }: { onNavigate: (i: number) => void; currentPage: number; totalPages: number }) {
   const [selected, setSelected] = useState<number | null>(null);
 
@@ -38,31 +65,28 @@ export default function PageGallery({ onNavigate }: { onNavigate: (i: number) =>
           </h2>
         </motion.div>
 
-        {/* Grid 5 columnas en desktop, 3 en tablet, 2 en móvil — altura fija para caber en pantalla */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1.5 sm:gap-2 flex-1">
-          {images.map((img, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.05, duration: 0.45 }}
-              className="relative rounded-lg overflow-hidden border border-[#1a1a1a] cursor-pointer group"
-              style={{ minHeight: "120px" }}
-              onClick={() => setSelected(i)}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={img.src} alt={img.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2">
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-white text-[10px] font-semibold leading-tight">{img.alt}</span>
-                  <div className="w-6 h-6 rounded-full bg-[#f5a623] flex items-center justify-center flex-shrink-0">
-                    <ZoomIn size={10} className="text-black" />
-                  </div>
-                </div>
-              </div>
-              <div className="absolute inset-0 rounded-lg border-2 border-[#f5a623]/0 group-hover:border-[#f5a623]/40 transition-all duration-300 pointer-events-none" />
-            </motion.div>
-          ))}
+        {/* Grid dinámico editorial */}
+        <div className="grid grid-cols-4 lg:grid-cols-6 grid-rows-2 gap-1.5 sm:gap-2 flex-1 min-h-0">
+          {/* Foto 0 — grande izquierda, ocupa 2 cols y 2 rows */}
+          <GalleryCell img={images[0]} i={0} onSelect={setSelected} className="col-span-2 row-span-2" />
+          {/* Foto 1 — mediana */}
+          <GalleryCell img={images[1]} i={1} onSelect={setSelected} className="col-span-2 row-span-1" />
+          {/* Foto 2 — mediana */}
+          <GalleryCell img={images[2]} i={2} onSelect={setSelected} className="col-span-2 row-span-1 hidden lg:block" />
+          {/* Foto 3 — pequeña */}
+          <GalleryCell img={images[3]} i={3} onSelect={setSelected} className="col-span-1 row-span-1" />
+          {/* Foto 4 — pequeña */}
+          <GalleryCell img={images[4]} i={4} onSelect={setSelected} className="col-span-1 row-span-1" />
+          {/* Foto 5 — ancha abajo */}
+          <GalleryCell img={images[5]} i={5} onSelect={setSelected} className="col-span-2 row-span-1 hidden lg:block" />
+          {/* Foto 6 — pequeña */}
+          <GalleryCell img={images[6]} i={6} onSelect={setSelected} className="col-span-1 row-span-1" />
+          {/* Foto 7 — pequeña */}
+          <GalleryCell img={images[7]} i={7} onSelect={setSelected} className="col-span-1 row-span-1" />
+          {/* Foto 8 — mediana */}
+          <GalleryCell img={images[8]} i={8} onSelect={setSelected} className="col-span-2 row-span-1" />
+          {/* Foto 9 — mediana */}
+          <GalleryCell img={images[9]} i={9} onSelect={setSelected} className="col-span-2 row-span-1 hidden lg:block" />
         </div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-3 sm:mt-4">
