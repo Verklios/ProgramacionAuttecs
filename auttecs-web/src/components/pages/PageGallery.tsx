@@ -4,15 +4,16 @@ import { useState } from "react";
 import { X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [
-  { src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", alt: "Automation engineer" },
-  { src: "https://images.unsplash.com/photo-1565043666747-69f6646db940?w=800&q=80", alt: "Mining operations" },
-  { src: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80", alt: "Robotics" },
-  { src: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80", alt: "Technology" },
-  { src: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80", alt: "Conveyor systems" },
-  { src: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80", alt: "Smart factory" },
-  { src: "https://images.unsplash.com/photo-1563089145-599997674d42?w=800&q=80", alt: "Industrial plant" },
-  { src: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80", alt: "Renewable energy" },
-  { src: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800&q=80", alt: "Mechanical systems" },
+  { src: "/gallery/foto-01.jpeg", alt: "Auttecs project 1" },
+  { src: "/gallery/foto-02.jpeg", alt: "Auttecs project 2" },
+  { src: "/gallery/foto-03.jpeg", alt: "Auttecs project 3" },
+  { src: "/gallery/foto-04.jpeg", alt: "Auttecs project 4" },
+  { src: "/gallery/foto-05.jpeg", alt: "Auttecs project 5" },
+  { src: "/gallery/foto-06.jpeg", alt: "Auttecs project 6" },
+  { src: "/gallery/foto-07.jpeg", alt: "Auttecs project 7" },
+  { src: "/gallery/foto-08.jpeg", alt: "Auttecs project 8" },
+  { src: "/gallery/foto-09.jpeg", alt: "Auttecs project 9" },
+  { src: "/gallery/foto-10.jpeg", alt: "Auttecs project 10" },
 ];
 
 export default function PageGallery({ onNavigate }: { onNavigate: (i: number) => void; currentPage: number; totalPages: number }) {
