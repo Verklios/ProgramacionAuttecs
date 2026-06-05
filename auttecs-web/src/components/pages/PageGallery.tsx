@@ -20,50 +20,53 @@ export default function PageGallery({ onNavigate }: { onNavigate: (i: number) =>
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="relative w-full h-full flex items-center overflow-y-auto page-scroll bg-[#050505]">
+    <div className="relative w-full h-full flex flex-col overflow-y-auto page-scroll bg-[#050505]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/20 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-10 w-full">
+      <div className="w-full px-3 sm:px-5 pt-20 sm:pt-22 pb-4 flex flex-col flex-1">
+        {/* Header compacto */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-7 sm:mb-10"
+          className="text-center mb-3 sm:mb-5"
         >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] font-bold uppercase tracking-widest mb-2">
             Gallery
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
             Take a look at <span className="gradient-text">our work</span>
           </h2>
         </motion.div>
 
-        <div className="columns-2 sm:columns-2 lg:columns-3 gap-2 sm:gap-3 space-y-2 sm:space-y-3">
+        {/* Grid 5 columnas en desktop, 3 en tablet, 2 en móvil — altura fija para caber en pantalla */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1.5 sm:gap-2 flex-1">
           {images.map((img, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.06, duration: 0.5 }}
-              className="break-inside-avoid relative rounded-xl overflow-hidden border border-[#1a1a1a] cursor-pointer group"
+              transition={{ delay: i * 0.05, duration: 0.45 }}
+              className="relative rounded-lg overflow-hidden border border-[#1a1a1a] cursor-pointer group"
+              style={{ minHeight: "120px" }}
               onClick={() => setSelected(i)}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={img.src} alt={img.alt} className="w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-3">
+              <img src={img.src} alt={img.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2">
                 <div className="flex items-center justify-between w-full">
-                  <span className="text-white text-xs font-semibold">{img.alt}</span>
-                  <div className="w-7 h-7 rounded-full bg-[#f5a623] flex items-center justify-center">
-                    <ZoomIn size={12} className="text-black" />
+                  <span className="text-white text-[10px] font-semibold leading-tight">{img.alt}</span>
+                  <div className="w-6 h-6 rounded-full bg-[#f5a623] flex items-center justify-center flex-shrink-0">
+                    <ZoomIn size={10} className="text-black" />
                   </div>
                 </div>
               </div>
-              <div className="absolute inset-0 rounded-xl border-2 border-[#f5a623]/0 group-hover:border-[#f5a623]/30 transition-all duration-400 pointer-events-none" />
+              <div className="absolute inset-0 rounded-lg border-2 border-[#f5a623]/0 group-hover:border-[#f5a623]/40 transition-all duration-300 pointer-events-none" />
             </motion.div>
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-6 sm:mt-8">
-          <button onClick={() => onNavigate(4)} className="btn-shine px-6 sm:px-8 py-2.5 sm:py-3 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-xs sm:text-sm hover:bg-[#fbbf24] transition-all shadow-lg shadow-[#f5a623]/20">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-3 sm:mt-4">
+          <button onClick={() => onNavigate(4)} className="btn-shine px-6 sm:px-8 py-2 sm:py-2.5 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-xs hover:bg-[#fbbf24] transition-all shadow-lg shadow-[#f5a623]/20">
             Contact Us →
           </button>
         </motion.div>
