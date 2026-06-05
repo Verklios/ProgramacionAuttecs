@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Factory, Wrench, HardHat, Zap, Wind, Building2, ChevronDown } from "lucide-react";
 import { useState } from "react";
+import Globe3D from "../Globe3D";
 
 const services = [
   { icon: Factory,   title: "Industry 5.0",                        color: "#f5a623", items: ["System Integrations", "IO-Link", "Automation", "IoT", "Intelligent Maintenance", "Robotics", "AI & Software Systems", "Vision Systems"] },
@@ -52,21 +53,42 @@ export default function PageServices({ onNavigate }: { onNavigate: (i: number) =
     <div className="relative w-full h-full flex items-center overflow-y-auto page-scroll bg-[#080808]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/20 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-10 w-full">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-7 sm:mb-10"
-        >
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
-            Our Services
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
-            Experts in <span className="gradient-text">automation</span>
-            <br />& technology solutions
-          </h2>
-        </motion.div>
+      {/* Globe decorativo de fondo */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/3 opacity-30 pointer-events-none hidden lg:block">
+        <Globe3D size={560} />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 pb-10 w-full relative">
+        {/* Header + Globe lado a lado en desktop */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-8 mb-7 sm:mb-10">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex-1 text-center lg:text-left"
+          >
+            <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
+              Our Services
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">
+              Experts in <span className="gradient-text">automation</span>
+              <br />& technology solutions
+            </h2>
+            <p className="text-slate-500 text-sm mt-3 max-w-md">
+              Integrated solutions across Mexico & USA — from Industry 5.0 to renewable energy.
+            </p>
+          </motion.div>
+
+          {/* Globe visible en tablet/desktop junto al header */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="hidden md:flex justify-center lg:flex-shrink-0"
+          >
+            <Globe3D size={220} />
+          </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           {services.map((s, i) => <ServiceCard key={s.title} s={s} i={i} />)}
