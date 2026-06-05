@@ -1,6 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [
@@ -16,48 +16,34 @@ const images = [
   { src: "/gallery/foto-10.jpeg", alt: "Auttecs project 10" },
 ];
 
-function GalleryCell({ img, i, onSelect, className }: {
-  img: typeof images[0]; i: number;
-  onSelect: (i: number) => void; className?: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: i * 0.06, duration: 0.5 }}
-      className={`relative rounded-xl overflow-hidden border border-[#1a1a1a] cursor-pointer group ${className ?? ""}`}
-      onClick={() => onSelect(i)}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={img.src} alt={img.alt} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2 sm:p-3">
-        <div className="flex items-center justify-between w-full">
-          <span className="text-white text-[10px] sm:text-xs font-semibold leading-tight">{img.alt}</span>
-          <div className="w-6 h-6 rounded-full bg-[#f5a623] flex items-center justify-center flex-shrink-0">
-            <ZoomIn size={10} className="text-black" />
-          </div>
-        </div>
-      </div>
-      <div className="absolute inset-0 rounded-xl border-2 border-[#f5a623]/0 group-hover:border-[#f5a623]/40 transition-all duration-300 pointer-events-none" />
-    </motion.div>
-  );
-}
-
 export default function PageGallery({ onNavigate }: { onNavigate: (i: number) => void; currentPage: number; totalPages: number }) {
   const [selected, setSelected] = useState<number | null>(null);
+  // which image index is currently "featured" (big)
+  const [featured, setFeatured] = useState(0);
+
+  // Auto-rotate featured photo every 3s
+  useEffect(() => {
+    const id = setInterval(() => {
+      setFeatured(prev => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Build display order: featured first, then the rest in original order
+  const order = [featured, ...images.map((_, i) => i).filter(i => i !== featured)];
 
   return (
-    <div className="relative w-full h-full flex flex-col overflow-y-auto page-scroll bg-[#050505]">
+    <div className="relative w-full h-full flex flex-col overflow-hidden bg-[#050505]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#f5a623]/20 to-transparent" />
 
-      <div className="w-full px-3 sm:px-5 pt-20 sm:pt-22 pb-4 flex flex-col flex-1">
-        {/* Header compacto */}
+      <div className="w-full px-3 sm:px-5 pt-20 pb-3 flex flex-col h-full">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-3 sm:mb-5"
+          className="text-center mb-3"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] font-bold uppercase tracking-widest mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#f5a623]/20 bg-[#f5a623]/5 text-[#f5a623] text-[10px] font-bold uppercase tracking-widest mb-1.5">
             Gallery
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
@@ -65,35 +51,82 @@ export default function PageGallery({ onNavigate }: { onNavigate: (i: number) =>
           </h2>
         </motion.div>
 
-        {/* Grid dinámico editorial */}
-        <div className="grid grid-cols-4 lg:grid-cols-6 grid-rows-2 gap-1.5 sm:gap-2 flex-1 min-h-0">
-          {/* Foto 0 — grande izquierda, ocupa 2 cols y 2 rows */}
-          <GalleryCell img={images[0]} i={0} onSelect={setSelected} className="col-span-2 row-span-2" />
-          {/* Foto 1 — mediana */}
-          <GalleryCell img={images[1]} i={1} onSelect={setSelected} className="col-span-2 row-span-1" />
-          {/* Foto 2 — mediana */}
-          <GalleryCell img={images[2]} i={2} onSelect={setSelected} className="col-span-2 row-span-1 hidden lg:block" />
-          {/* Foto 3 — pequeña */}
-          <GalleryCell img={images[3]} i={3} onSelect={setSelected} className="col-span-1 row-span-1" />
-          {/* Foto 4 — pequeña */}
-          <GalleryCell img={images[4]} i={4} onSelect={setSelected} className="col-span-1 row-span-1" />
-          {/* Foto 5 — ancha abajo */}
-          <GalleryCell img={images[5]} i={5} onSelect={setSelected} className="col-span-2 row-span-1 hidden lg:block" />
-          {/* Foto 6 — pequeña */}
-          <GalleryCell img={images[6]} i={6} onSelect={setSelected} className="col-span-1 row-span-1" />
-          {/* Foto 7 — pequeña */}
-          <GalleryCell img={images[7]} i={7} onSelect={setSelected} className="col-span-1 row-span-1" />
-          {/* Foto 8 — mediana */}
-          <GalleryCell img={images[8]} i={8} onSelect={setSelected} className="col-span-2 row-span-1" />
-          {/* Foto 9 — mediana */}
-          <GalleryCell img={images[9]} i={9} onSelect={setSelected} className="col-span-2 row-span-1 hidden lg:block" />
+        {/* Dynamic grid */}
+        <div className="flex-1 min-h-0 grid grid-cols-5 grid-rows-2 gap-1.5 sm:gap-2">
+          {order.map((imgIdx, position) => {
+            const isFeatured = position === 0;
+            return (
+              <motion.div
+                key={imgIdx}
+                layoutId={`gallery-${imgIdx}`}
+                layout
+                transition={{ type: "spring", stiffness: 200, damping: 28 }}
+                className={`relative rounded-xl overflow-hidden border cursor-pointer group
+                  ${isFeatured
+                    ? "col-span-2 row-span-2 border-[#f5a623]/40"
+                    : "col-span-1 row-span-1 border-[#1a1a1a]"
+                  }`}
+                onClick={() => setSelected(imgIdx)}
+                whileHover={{ scale: 1.02, zIndex: 10 }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={images[imgIdx].src}
+                  alt={images[imgIdx].alt}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+
+                {/* Featured badge */}
+                {isFeatured && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-[#f5a623] text-black text-[9px] font-black uppercase tracking-widest"
+                  >
+                    Featured
+                  </motion.div>
+                )}
+
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end p-2 sm:p-3">
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-white text-[10px] sm:text-xs font-semibold leading-tight">{images[imgIdx].alt}</span>
+                    <div className="w-6 h-6 rounded-full bg-[#f5a623] flex items-center justify-center flex-shrink-0">
+                      <ZoomIn size={10} className="text-black" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Gold border on featured */}
+                {isFeatured && (
+                  <div className="absolute inset-0 rounded-xl border-2 border-[#f5a623]/50 pointer-events-none" />
+                )}
+              </motion.div>
+            );
+          })}
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-3 sm:mt-4">
-          <button onClick={() => onNavigate(4)} className="btn-shine px-6 sm:px-8 py-2 sm:py-2.5 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-xs hover:bg-[#fbbf24] transition-all shadow-lg shadow-[#f5a623]/20">
+        {/* Dot indicators + CTA */}
+        <div className="flex items-center justify-between mt-2.5 sm:mt-3">
+          <div className="flex gap-1.5">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setFeatured(i)}
+                className={`rounded-full transition-all duration-300 ${
+                  i === featured ? "w-4 h-2 bg-[#f5a623]" : "w-2 h-2 bg-white/15 hover:bg-white/30"
+                }`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={() => onNavigate(4)}
+            className="btn-shine px-5 sm:px-7 py-1.5 sm:py-2 rounded-full bg-[#f5a623] text-black font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-[#fbbf24] transition-all shadow-lg shadow-[#f5a623]/20"
+          >
             Contact Us →
           </button>
-        </motion.div>
+        </div>
       </div>
 
       {/* Lightbox */}
