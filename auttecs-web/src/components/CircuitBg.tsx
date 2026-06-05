@@ -13,6 +13,7 @@ export default function CircuitBg() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const c = ctx as CanvasRenderingContext2D;
 
     const resize = () => {
       canvas.width  = canvas.offsetWidth;
@@ -30,11 +31,11 @@ export default function CircuitBg() {
       const w = canvas.width, h = canvas.height;
       const gx = w / COLS, gy = h / ROWS;
       for (let r = 0; r <= ROWS; r++) {
-        for (let c = 0; c <= COLS; c++) {
+        for (let col = 0; col <= COLS; col++) {
           const jx = (Math.random() - 0.5) * gx * 0.4;
           const jy = (Math.random() - 0.5) * gy * 0.4;
           nodes.push({
-            x: c * gx + jx,
+            x: col * gx + jx,
             y: r * gy + jy,
             active: Math.random() > 0.35,
           });
@@ -70,7 +71,7 @@ export default function CircuitBg() {
 
     const draw = () => {
       const w = canvas.width, h = canvas.height;
-      ctx.clearRect(0, 0, w, h);
+      c.clearRect(0, 0, w, h);
 
       // Draw edges (circuit traces)
       edges.forEach(e => {
@@ -78,14 +79,14 @@ export default function CircuitBg() {
 
         const mx = (e.a.x + e.b.x) / 2;
         // PCB-style: go horizontal then vertical
-        ctx.beginPath();
-        ctx.moveTo(e.a.x, e.a.y);
-        ctx.lineTo(mx, e.a.y);
-        ctx.lineTo(mx, e.b.y);
-        ctx.lineTo(e.b.x, e.b.y);
-        ctx.strokeStyle = "rgba(245,166,35,0.08)";
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        c.beginPath();
+        c.moveTo(e.a.x, e.a.y);
+        c.lineTo(mx, e.a.y);
+        c.lineTo(mx, e.b.y);
+        c.lineTo(e.b.x, e.b.y);
+        c.strokeStyle = "rgba(245,166,35,0.08)";
+        c.lineWidth = 1;
+        c.stroke();
 
         // Traveling signal dot
         const totalLen = Math.abs(e.b.x - e.a.x) + Math.abs(e.b.y - e.a.y);
@@ -106,33 +107,33 @@ export default function CircuitBg() {
         }
 
         // Glow
-        const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, 6);
+        const grd = c.createRadialGradient(sx, sy, 0, sx, sy, 6);
         grd.addColorStop(0, "rgba(245,166,35,0.9)");
         grd.addColorStop(1, "transparent");
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 6, 0, Math.PI * 2);
-        ctx.fill();
+        c.fillStyle = grd;
+        c.beginPath();
+        c.arc(sx, sy, 6, 0, Math.PI * 2);
+        c.fill();
 
         // Dot
-        ctx.fillStyle = "rgba(255,220,100,1)";
-        ctx.beginPath();
-        ctx.arc(sx, sy, 1.5, 0, Math.PI * 2);
-        ctx.fill();
+        c.fillStyle = "rgba(255,220,100,1)";
+        c.beginPath();
+        c.arc(sx, sy, 1.5, 0, Math.PI * 2);
+        c.fill();
       });
 
       // Draw nodes
       nodes.filter(n => n.active).forEach(n => {
         const pulse = 0.5 + 0.5 * Math.sin(t * 0.02 + n.x * 0.01);
-        ctx.fillStyle = `rgba(245,166,35,${0.2 + pulse * 0.25})`;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
-        ctx.fill();
+        c.fillStyle = `rgba(245,166,35,${0.2 + pulse * 0.25})`;
+        c.beginPath();
+        c.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
+        c.fill();
 
         // Small square pad (PCB style)
-        ctx.strokeStyle = `rgba(245,166,35,${0.15 + pulse * 0.1})`;
-        ctx.lineWidth = 0.8;
-        ctx.strokeRect(n.x - 4, n.y - 4, 8, 8);
+        c.strokeStyle = `rgba(245,166,35,${0.15 + pulse * 0.1})`;
+        c.lineWidth = 0.8;
+        c.strokeRect(n.x - 4, n.y - 4, 8, 8);
       });
 
       t++;

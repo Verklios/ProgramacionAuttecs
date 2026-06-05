@@ -65,11 +65,12 @@ export default function Globe3D({ size = 420 }: { size?: number }) {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    const c = ctx as CanvasRenderingContext2D;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width  = size * dpr;
     canvas.height = size * dpr;
-    ctx.scale(dpr, dpr);
+    c.scale(dpr, dpr);
 
     const cx = size / 2;
     const cy = size / 2;
@@ -81,49 +82,49 @@ export default function Globe3D({ size = 420 }: { size?: number }) {
     let pulse = 0;
 
     function draw() {
-      ctx.clearRect(0, 0, size, size);
+      c.clearRect(0, 0, size, size);
 
       // ── Atmosphere glow ───────────────────────────────────────
-      const atm = ctx.createRadialGradient(cx, cy, R * 0.7, cx, cy, R * 1.25);
+      const atm = c.createRadialGradient(cx, cy, R * 0.7, cx, cy, R * 1.25);
       atm.addColorStop(0, "rgba(245,166,35,0.04)");
       atm.addColorStop(0.6, "rgba(245,166,35,0.08)");
       atm.addColorStop(1, "transparent");
-      ctx.fillStyle = atm;
-      ctx.beginPath();
-      ctx.arc(cx, cy, R * 1.25, 0, Math.PI * 2);
-      ctx.fill();
+      c.fillStyle = atm;
+      c.beginPath();
+      c.arc(cx, cy, R * 1.25, 0, Math.PI * 2);
+      c.fill();
 
       // ── Latitude lines ────────────────────────────────────────
       for (let lat = -80; lat <= 80; lat += 20) {
-        ctx.beginPath();
+        c.beginPath();
         let pen = false;
         for (let lon = 0; lon <= 362; lon += 2) {
           const p = project(lat, lon, angle);
           if (p.z < 0) { pen = false; continue; }
           const sx = cx + p.x * R, sy = cy + p.y * R;
-          pen ? ctx.lineTo(sx, sy) : ctx.moveTo(sx, sy);
+          pen ? c.lineTo(sx, sy) : c.moveTo(sx, sy);
           pen = true;
         }
         const a = Math.abs(lat) === 0 ? 0.25 : 0.12;
-        ctx.strokeStyle = `rgba(245,166,35,${a})`;
-        ctx.lineWidth = lat === 0 ? 0.8 : 0.5;
-        ctx.stroke();
+        c.strokeStyle = `rgba(245,166,35,${a})`;
+        c.lineWidth = lat === 0 ? 0.8 : 0.5;
+        c.stroke();
       }
 
       // ── Longitude lines ───────────────────────────────────────
       for (let lon = 0; lon < 360; lon += 20) {
-        ctx.beginPath();
+        c.beginPath();
         let pen = false;
         for (let lat = -90; lat <= 90; lat += 2) {
           const p = project(lat, lon, angle);
           if (p.z < 0) { pen = false; continue; }
           const sx = cx + p.x * R, sy = cy + p.y * R;
-          pen ? ctx.lineTo(sx, sy) : ctx.moveTo(sx, sy);
+          pen ? c.lineTo(sx, sy) : c.moveTo(sx, sy);
           pen = true;
         }
-        ctx.strokeStyle = "rgba(245,166,35,0.10)";
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
+        c.strokeStyle = "rgba(245,166,35,0.10)";
+        c.lineWidth = 0.5;
+        c.stroke();
       }
 
       // ── Arcs between nodes ────────────────────────────────────
@@ -132,22 +133,22 @@ export default function Globe3D({ size = 420 }: { size?: number }) {
         const visible = pts.filter(p => p.z > 0);
         if (visible.length < 2) return;
 
-        ctx.beginPath();
+        c.beginPath();
         let pen = false;
         pts.forEach(p => {
           if (p.z <= 0) { pen = false; return; }
           const sx = cx + p.x * R, sy = cy + p.y * R;
-          pen ? ctx.lineTo(sx, sy) : ctx.moveTo(sx, sy);
+          pen ? c.lineTo(sx, sy) : c.moveTo(sx, sy);
           pen = true;
         });
 
         // Animated dash offset
-        ctx.setLineDash([4, 6]);
-        ctx.lineDashOffset = -pulse * 0.3;
-        ctx.strokeStyle = "rgba(245,166,35,0.35)";
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
-        ctx.setLineDash([]);
+        c.setLineDash([4, 6]);
+        c.lineDashOffset = -pulse * 0.3;
+        c.strokeStyle = "rgba(245,166,35,0.35)";
+        c.lineWidth = 0.8;
+        c.stroke();
+        c.setLineDash([]);
       });
 
       // ── Nodes ─────────────────────────────────────────────────
@@ -161,33 +162,33 @@ export default function Globe3D({ size = 420 }: { size?: number }) {
 
         // Outer glow ring (pulsing)
         const glowR = 7 * pulseFactor;
-        const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, glowR * 2);
+        const grd = c.createRadialGradient(sx, sy, 0, sx, sy, glowR * 2);
         grd.addColorStop(0, `rgba(245,166,35,${alpha * 0.6})`);
         grd.addColorStop(1, "transparent");
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(sx, sy, glowR * 2, 0, Math.PI * 2);
-        ctx.fill();
+        c.fillStyle = grd;
+        c.beginPath();
+        c.arc(sx, sy, glowR * 2, 0, Math.PI * 2);
+        c.fill();
 
         // Dot
-        ctx.fillStyle = `rgba(245,166,35,${alpha})`;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 2.2, 0, Math.PI * 2);
-        ctx.fill();
+        c.fillStyle = `rgba(245,166,35,${alpha})`;
+        c.beginPath();
+        c.arc(sx, sy, 2.2, 0, Math.PI * 2);
+        c.fill();
 
         // Inner bright center
-        ctx.fillStyle = `rgba(255,220,100,${alpha * 0.9})`;
-        ctx.beginPath();
-        ctx.arc(sx, sy, 1, 0, Math.PI * 2);
-        ctx.fill();
+        c.fillStyle = `rgba(255,220,100,${alpha * 0.9})`;
+        c.beginPath();
+        c.arc(sx, sy, 1, 0, Math.PI * 2);
+        c.fill();
       });
 
       // ── Outer crisp ring ──────────────────────────────────────
-      ctx.beginPath();
-      ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(245,166,35,0.18)";
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      c.beginPath();
+      c.arc(cx, cy, R, 0, Math.PI * 2);
+      c.strokeStyle = "rgba(245,166,35,0.18)";
+      c.lineWidth = 1;
+      c.stroke();
 
       angle += 0.004;
       pulse += 1;
