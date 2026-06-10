@@ -5,6 +5,7 @@ import PageHome from "./pages/PageHome";
 import PageAbout from "./pages/PageAbout";
 import PageServices from "./pages/PageServices";
 import PageGallery from "./pages/PageGallery";
+import PageTeam from "./pages/PageTeam";
 import PageContact from "./pages/PageContact";
 
 const PAGES = [
@@ -12,6 +13,7 @@ const PAGES = [
   { id: "about",    label: "About Us",  Component: PageAbout },
   { id: "services", label: "Services",  Component: PageServices },
   { id: "gallery",  label: "Gallery",   Component: PageGallery },
+  { id: "team",     label: "Team",      Component: PageTeam },
   { id: "contact",  label: "Contact",   Component: PageContact },
 ];
 
